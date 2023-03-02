@@ -1,0 +1,113 @@
+int[] centers;
+void setup() {
+  size(850, 850);
+  int r=10;
+  int islands=int(random(1, 20));
+  centers=new int[0];
+  noStroke();
+  for (int i=0; i<width; i=i+r) {
+    for (int j=0; j<height; j=j+r) {
+      fill(14, 135, 204);
+      rect(i, j, r, r);
+    }
+  }
+  for (int l=0; l<islands; l++) {
+    beaches();
+  }
+  forests();
+  lakes();
+  mountains();
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void beaches() {
+  int islandX =int(random(100, 750));
+  int islandY =int(random(100, 750));
+  fill(255, 212, 128);
+  for (int i=0; i<300; i=i+1) {
+    int x=int(random(width));
+    int y=int(random(height));
+    int w =int(random(10, 100));
+    while ((x+w>islandX
+      && x-w<islandX
+      && y+w>islandY
+      && y-w<islandY)==false) {
+      x=int(random(width));
+      y=int(random(height));
+    }
+    ellipse(x, y, w, w);
+  }
+  centers = (int[])append(centers, islandX);
+  centers = (int[])append(centers, islandY);
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void lakes() {
+  for (int i=0; i<centers.length; i=i+2) {
+    int w=int(random(10, 40));
+    int difference1=int(random(-80, 80));
+    int difference2=int(random(-80, 80));
+    noStroke();
+    fill(14, 135, 204);
+    ellipse(centers[i]+difference1, centers[i+1]+difference2, w, w );
+  }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void forests() {
+  for (int i=0; i<centers.length; i=i+2) {
+    int w=int(random(10, 40));
+    noStroke();
+    fill(0, 102, 0);
+    ellipse(centers[i], centers[i+1], w, w );
+    for (int j=0; j<centers.length; j=j+2) {
+      if (i>0 && int(dist(centers[i], centers[i+1], centers[j], centers[j+1]))<200) {
+        strokeWeight(w);
+        fill(0, 102, 0);
+        //line(centers[i], centers[i+1], centers[j], centers[j+1]);
+      }
+    }
+    int rand=250;
+    for (int l=0; l<int(random(30, 80)); l++) {
+      int x=centers[i]+int(random(-rand, rand));
+      int y=centers[i+1]+int(random(-rand, rand));
+      w=int(random(10, 80));
+      while ((x+w>centers[i]
+        && x-w<centers[i]
+        && y+w>centers[i+1]
+        && y-w<centers[i+1])==false) {
+        x=int(centers[i]+int(random(-rand, rand)));
+        y=int(centers[i+1]+int(random(-rand, rand)));
+        w=int(random(10, 80));
+      }
+      ellipse(x, y, w, w);
+    }
+  }
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void mountains() {
+  for (int i=0; i<centers.length; i=i+2) {
+    int w=int(random(10, 40));
+    noStroke();
+    fill(128, 128, 128);
+    ellipse(centers[i], centers[i+1], w, w );
+    for (int j=0; j<centers.length; j=j+2) {
+      if (i>0 && int(dist(centers[i], centers[i+1], centers[j], centers[j+1]))<200) {
+        strokeWeight(w);
+        stroke(128, 128, 128);
+        //line(centers[i], centers[i+1], centers[j], centers[j+1]);
+      }
+    }
+    for (int l=0; l<int(random(10, 40)); l++) {
+      int x=centers[i]+int(random(-40, 40));
+      int y=centers[i+1]+int(random(-40, 40));
+      w=int(random(10, 40));
+      while ((x+w>centers[i]
+        && x-w<centers[i]
+        && y+w>centers[i+1]
+        && y-w<centers[i+1])==false) {
+        x=int(centers[i]+int(random(-40, 40)));
+        y=int(centers[i+1]+int(random(-40, 40)));
+        w=int(random(10, 40));
+      }
+      ellipse(x, y, w, w);
+    }
+  }
+}
